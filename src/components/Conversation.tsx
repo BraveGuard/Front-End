@@ -1,6 +1,7 @@
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { twMerge } from "tailwind-merge";
+import { RingCheck } from "./Ring";
 
 type ConversationProps = {
   type: "vehicle" | "travel";
@@ -20,7 +21,9 @@ export const Conversation = ({ date, type, title }: ConversationProps) => {
       <div className="flex flex-col gap-2 ">
         <span className="text-lg">Previous Conversation</span>
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 border-2 rounded-md"></div>
+          <div className="w-10 h-10 ">
+            <RingCheck plain />
+          </div>
           <div className="flex flex-col gap-2 ">
             <span>{title}</span>
             <div className="flex gap-1 items-center opacity-[60%]">
