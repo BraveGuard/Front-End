@@ -1,4 +1,4 @@
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import isMobile from "is-mobile";
 import React, { ChangeEventHandler, useState } from "react";
@@ -21,13 +21,16 @@ export const Camera = ({
   const n = useNavigate();
   const webcamRef = React.useRef<Webcam>(null);
   const mobile = isMobile();
+  const [url, setUrl] = useState("");
   const [facing, setFacing] = useState<"environment" | undefined>(
     mobile ? "environment" : undefined
   );
   const _onCapture = () => {
-    const res = webcamRef.current?.getScreenshot({ width: 900, height: 1200 });
-    console.log(res);
-    res && onCapture(res);
+    const res = webcamRef.current?.getScreenshot({ width: 1600, height: 1200 });
+    res && setUrl(res);
+    setTimeout(() => {
+      res && onCapture(res);
+    }, 1500);
   };
 
   const flipFacing = () => {
@@ -49,18 +52,23 @@ export const Camera = ({
   return (
     <div className="flex h-full justify-center flex-col w-full items-center gap-4 bg-black">
       <div className="flex-1 flex-col gap-6 flex items-center justify-center ">
-        <Webcam
-          videoConstraints={
-            facing
-              ? { height: 1200, width: 900, facingMode: { exact: facing } }
-              : undefined
-          }
-          height={1200}
-          width={900}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-        />
-        <div className="">
+        {url ? (
+          <img src={url} />
+        ) : (
+          <Webcam
+            videoConstraints={
+              facing
+                ? { height: 1200, width: 1600, facingMode: { exact: facing } }
+                : undefined
+            }
+            height={1200}
+            width={1600}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+          />
+        )}
+
+        <div className={url ? "invisible" : undefined}>
           <input
             multiple={false}
             onChange={(f) => onFilePick(f)}
@@ -73,13 +81,14 @@ export const Camera = ({
             htmlFor="fileInput"
             className="p-2 cursor-pointer h-full flex items-center justify-center  rounded-md bg-white"
           >
-            Upload a Picture
+            or select a File
           </label>
         </div>
       </div>
 
       <div className="w-full">
         <Tabs
+          tick={!!url}
           onBackPress={_onGoBack}
           onClickPress={_onCapture}
           onRetakePress={() => {}}
@@ -93,9 +102,11 @@ const Tabs = ({
   onBackPress,
   onClickPress,
   onRetakePress,
+  tick = false,
 }: {
   onBackPress: () => void;
   onClickPress: () => void;
+  tick?: boolean;
   onRetakePress: () => void;
 }) => {
   return (
@@ -118,10 +129,10 @@ const Tabs = ({
         </svg>
       </button>
       <button
-        className="bg-[#363E51] text-white flex items-center justify-center rounded-md shadow-md"
+        className=" text-white flex items-center justify-center rounded-md shadow-md"
         onClick={onClickPress}
       >
-        <FontAwesomeIcon size={"2xl"} icon={faCamera} />
+        <FontAwesomeIcon size={"2xl"} icon={tick ? faCheck : faCamera} />
       </button>
 
       <button
