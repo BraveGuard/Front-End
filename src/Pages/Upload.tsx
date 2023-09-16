@@ -28,12 +28,7 @@ export const Upload = ({
     onUploadDone(null, image);
   };
   if (isLoading) {
-    return (
-      <div>
-        <img src={imageUrl} />
-        <Loading></Loading>
-      </div>
-    );
+    return <Loading></Loading>;
   }
 
   return (

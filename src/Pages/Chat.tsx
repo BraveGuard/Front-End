@@ -110,7 +110,7 @@ export const Chat = () => {
       });
     }, 500);
   };
-  if (false) {
+  if (showCamera) {
     return <Upload onUploadDone={onUploadDone} />;
   }
 
@@ -124,14 +124,9 @@ export const Chat = () => {
             <FontAwesomeIcon icon={faEllipsisVertical} />
           </div>
           <div>
-            {true ? (
+            {imageUrl ? (
               <div className="w-full overflow-hidden rounded-lg aspect-video">
-                <img
-                  className="w-full h-full object-cover"
-                  src={
-                    "https://images.unsplash.com/photo-1609560140261-4efaa689b6c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmF0dXJlJTIwcG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
-                  }
-                />
+                <img className="w-full h-full object-cover" src={imageUrl} />
               </div>
             ) : null}
             <div className="pt-2"> Here is some information about your car</div>
