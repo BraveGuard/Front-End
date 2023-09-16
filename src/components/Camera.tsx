@@ -1,3 +1,4 @@
+import isMobile from "is-mobile";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
@@ -9,7 +10,10 @@ export const Camera = ({
 }) => {
   const n = useNavigate();
   const webcamRef = React.useRef<Webcam>(null);
-  const [facing, setFacing] = useState<"environment" | undefined>(undefined);
+  const mobile = isMobile();
+  const [facing, setFacing] = useState<"environment" | undefined>(
+    mobile ? "environment" : undefined
+  );
   const _onCapture = () => {
     const res = webcamRef.current?.getScreenshot({ width: 900, height: 1200 });
     console.log(res);
@@ -59,7 +63,7 @@ const Tabs = ({
   onRetakePress: () => void;
 }) => {
   return (
-    <div className=" flex w-full h-full py-2  px-10 pb-4 items-center justify-between bg-[#2D2C2C] rounded-t-md">
+    <div className="h-[100px] flex w-full py-2  px-10 pb-4 items-center justify-between bg-[#2D2C2C] rounded-t-md">
       <button
         className=" w-8 h-8 bg-[#363E51] flex items-center justify-center rounded-md shadow-md"
         onClick={onBackPress}

@@ -86,7 +86,7 @@ export const Chat = () => {
 
         <div>{<Bubble />}</div>
       </div>
-      <div className="items-center justify-self-end flex gap-2 justify-between px-2  bg-slate-200 rounded-t-md p-2 ">
+      <div className="items-center justify-self-end flex gap-2 justify-between px-2  bg-slate-200 rounded-t-md p-6 ">
         <input
           onChange={(e) => setQuery(e.currentTarget.value)}
           value={query}

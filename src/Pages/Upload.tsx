@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import { Camera } from "../components/Camera";
 import { Loading } from "../components/Loading";
 import { getEntries } from "../api/axios";
+import isMobile from "is-mobile";
 
 export const Upload = ({
   onUploadDone,
