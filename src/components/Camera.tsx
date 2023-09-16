@@ -26,7 +26,7 @@ export const Camera = ({
     mobile ? "environment" : undefined
   );
   const _onCapture = () => {
-    const res = webcamRef.current?.getScreenshot({ width: 1600, height: 1200 });
+    const res = webcamRef.current?.getScreenshot({ width: 1600, height: 1600 });
     res && setUrl(res);
     setTimeout(() => {
       res && onCapture(res);
@@ -58,10 +58,10 @@ export const Camera = ({
           <Webcam
             videoConstraints={
               facing
-                ? { height: 1200, width: 1600, facingMode: { exact: facing } }
-                : undefined
+                ? { height: 1600, width: 1600, facingMode: { exact: facing } }
+                : { height: 1600, width: 1600, facingMode: "" }
             }
-            height={1200}
+            height={1600}
             width={1600}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
