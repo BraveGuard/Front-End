@@ -4,12 +4,13 @@ import { getEntries } from "../api/axios";
 import { Bubble } from "../components/Bubble";
 import { Message } from "../components/Message";
 import { twMerge } from "tailwind-merge";
-import { KeyboardEventHandler, useState } from "react";
+import { KeyboardEventHandler, useRef, useState } from "react";
 import { Modal } from "../components/Modal";
 import { Camera } from "../components/Camera";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
+  faArrowRightFromBracket,
   faCamera,
   faEllipsisVertical,
   faFile,
@@ -19,6 +20,8 @@ import { MessageType } from "../types/Message";
 import { AnimatePresence } from "framer-motion";
 import { Loading } from "../components/Loading";
 import { Upload } from "./Upload";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { Link } from "react-router-dom";
 
 const messages: MessageType[] = [
   {
@@ -55,12 +58,18 @@ const messages: MessageType[] = [
 
 export const Chat = () => {
   const [showCamera, setShowCamera] = useState(true);
+  const [displayClaim, setDisplayClaim] = useState(false);
   const [messageStream, setMessageStream] = useState(messages);
   const [query, setQuery] = useState("");
+
+  const ref = useRef<HTMLDivElement>(null);
+  const ref_claim = useRef<HTMLDivElement>(null);
+
   const [imageUrl, setImageUrl] = useState("");
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: "entries",
     queryFn: getEntries,
+    onSuccess: () => _scroll(),
   });
 
   const onUploadDone = (d: any, image: string) => {
@@ -69,10 +78,20 @@ export const Chat = () => {
     console.log(data);
   };
 
+  const _scroll = () => {
+    setTimeout(() => {
+      ref.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 300);
+  };
   const sendMessage = (query: string) => {
     //TODO:Send message
+
     setMessageStream((m) => [...m, { message: query, type: "outgoing" }]);
     setQuery("");
+    _scroll();
   };
 
   const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -81,6 +100,16 @@ export const Chat = () => {
     }
   };
 
+  const enableClaim = () => {
+    setDisplayClaim(true);
+    setTimeout(() => {
+      ref_claim.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
+    }, 500);
+  };
   if (false) {
     return <Upload onUploadDone={onUploadDone} />;
   }
@@ -108,10 +137,10 @@ export const Chat = () => {
             <div className="pt-2"> Here is some information about your car</div>
           </div>
         </div>
-        <div className="p-2 sticky top-2">
+        <div className="p-4 bg-slate-50 sticky top-0">
           <InfoBox description="aa" damageDetails="aa" model="Honda" />
         </div>
-        <div className="flex flex-col gap-2 py-2 px-4">
+        <div ref={ref} className="flex flex-col gap-2 py-2 px-4">
           {messageStream.map((m, index) => {
             const isIncoming =
               m.type == "incoming" || m.type == "recommendation";
@@ -135,8 +164,8 @@ export const Chat = () => {
               </div>
             );
           })}
-
-          <div>{<Bubble />}</div>
+          {isLoading && <div>{<Bubble />}</div>}
+          <div ref={ref_claim}>{displayClaim && <CreatClaim />}</div>
         </div>
       </div>
       <div className="items-center justify-self-end flex gap-2 justify-between px-2  bg-slate-200 rounded-t-md p-6 ">
@@ -145,9 +174,18 @@ export const Chat = () => {
           onChange={(e) => setQuery(e.currentTarget.value)}
           value={query}
           onKeyDown={onKeyDown}
-          className="block w-full p-2 h-12 rounded-md"
+          className={twMerge(
+            "block w-full p-2 h-12 rounded-md",
+            displayClaim && "invisible"
+          )}
           type="text"
         />
+        <button
+          onClick={enableClaim}
+          className=" flex text-white bg-gray-700 items-center justify-center rounded-md h-full aspect-square"
+        >
+          <FontAwesomeIcon size="xl" icon={faCircleXmark} />
+        </button>
       </div>
     </div>
   );
@@ -185,6 +223,27 @@ const InfoBox = ({
           <div>Active Policy: MP.500.002</div>
         </div>
         <div className="">Motor Vehicle Insurance</div>
+      </div>
+    </div>
+  );
+};
+
+const CreatClaim = () => {
+  return (
+    <div className="mt-[50%] mb-[50%]  ring-gray-200 ring-1 gap-4 flex flex-col rounded-xl p-4 shadow-xl">
+      <div>
+        Would you like to create a claim out of the information you submitted ?
+      </div>
+      <div className="w-full text-center flex gap-4 justify-between">
+        <button className="flex-1 rounded-md px-3 py-2 bg-green-600 text-white">
+          Create Claim
+        </button>
+        <Link
+          to="/home"
+          className="flex-1 rounded-md px-3 py-2 bg-black text-white"
+        >
+          Exit
+        </Link>
       </div>
     </div>
   );
