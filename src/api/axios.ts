@@ -10,5 +10,7 @@ export const api = baseAxios.create({
 });
 
 export async function getEntries() {
-  return (await api.get("/fact")).data;
+  setTimeout(() => {
+    Promise.resolve();
+  }, 5000);
 }

@@ -3,13 +3,13 @@ import { Variants, motion } from "framer-motion";
 export const Bubble = () => {
   return (
     <motion.div
-      className="py-2 px-2 inline-flex gap-1 bg-white overflow-hidden rounded-md items-center"
+      className="py-2 px-2 inline-flex gap-1 bg-slate-100 overflow-hidden rounded-md items-center"
       variants={container}
       initial="hidden"
       animate="visible"
       transition={{ repeat: Infinity }}
     >
-      {[0, 1, 2, 3, 5, 6].map((index) => (
+      {Array.from({ length: 5 }).map((_, index) => (
         <motion.div
           key={index}
           //   transition={{ repeat: Infinity }}

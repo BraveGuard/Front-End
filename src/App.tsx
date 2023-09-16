@@ -16,10 +16,10 @@ const queryClient = new QueryClient();
 // ]);
 
 function App() {
-  const [isInitial, setIsInitial] = useState(true);
+  const [isInitial, setIsInitial] = useState(false);
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="text-black text-sm  h-screen w-[320px] flex flex-col px-2 py-2  mx-auto ">
+      <div className="text-black text-sm  h-screen w-[360px] flex flex-col px-2 py-2  mx-auto ">
         <motion.div
           className="h-full relative"
           layout
