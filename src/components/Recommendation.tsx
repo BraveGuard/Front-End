@@ -3,7 +3,11 @@ import type {
   Recommendation as RecommendationType,
   Recommendations as RecommendationsType,
 } from "../types/Recommendation";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMapMarker,
+  faPhone,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Recommendations = ({
   recommendations,
@@ -11,39 +15,46 @@ export const Recommendations = ({
   recommendations: RecommendationsType;
 }) => {
   return (
-    <div className="flex flex-col gap-1 w-full">
+    <div className="flex gap-1 w-auto">
       {recommendations.map((r) => {
-        return <Recommendation recommendation={r}></Recommendation>;
+        return (
+          <div className="w-40 flex-shrink-0">
+            <Recommendation recommendation={r}></Recommendation>
+          </div>
+        );
       })}
     </div>
   );
 };
 
 const Recommendation = ({
-  recommendation: { src, name, contact },
+  recommendation: { src, name, contact, address },
 }: {
   recommendation: RecommendationType;
 }) => {
   return (
-    <div className="flex gap-2 rounded-lg rounded-tl-none bg-slate-200 py-2 px-2">
-      <div className="w-10 h-10 bg-purple-200 rounded-full flex justify-center items-center">
-        {src ? (
-          <image href={src}></image>
-        ) : (
-          <span className="text-purple-700 text-lg font-bold">
-            {name[0].toUpperCase()}
-          </span>
-        )}
+    <div className="w-full border rounded-xl p-3 flex flex-col gap-1">
+      <img
+        className="w-full aspect-square object-cover border rounded-xl"
+        src={src}
+      />
+      <div className="flex gap-1">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <FontAwesomeIcon color="orange" size="sm" icon={faStar} />
+        ))}
       </div>
-      <div className="flex flex-col">
-        <span>{name}</span>
-        <div className="text-blue-500">
-          <FontAwesomeIcon icon={faPhone} />
-          <a className="ml-1" href={"tel:" + contact}>
-            {contact}
-          </a>
+      <span className="text-base">{name}</span>
+      {contact && (
+        <div className="text-xs  flex items-center gap-1">
+          <FontAwesomeIcon size="sm" icon={faPhone} /> {contact}
         </div>
-      </div>
+      )}
+      {address && (
+        <div className="text-xs flex items-center gap-1">
+          <FontAwesomeIcon size="sm" icon={faMapMarker} />
+          {address}
+        </div>
+      )}
     </div>
   );
 };
