@@ -41,7 +41,7 @@ function App() {
               transition={{ duration: 1, type: "spring" }}
             >
               <Routes>
-                <Route path="/" Component={Landing}></Route>
+                <Route path="/" Component={Home}></Route>
                 <Route path="/home" Component={Home}></Route>
                 <Route path="/chat" Component={Chat}></Route>
               </Routes>

@@ -1,27 +1,21 @@
-import { useMutation, useQuery } from "react-query";
-import { getEntries } from "../api/axios";
+import { useMutation } from "react-query";
+import { UploadResponse } from "../api/axios";
 
 import { Bubble } from "../components/Bubble";
 import { Message } from "../components/Message";
 import { twMerge } from "tailwind-merge";
 import { KeyboardEventHandler, useRef, useState } from "react";
-import { Modal } from "../components/Modal";
-import { Camera } from "../components/Camera";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
-  faArrowRightFromBracket,
-  faCamera,
   faEllipsisVertical,
-  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import { Recommendations } from "../components/Recommendation";
 import { MessageType } from "../types/Message";
-import { AnimatePresence } from "framer-motion";
-import { Loading } from "../components/Loading";
 import { Upload } from "./Upload";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
+import { sendMessage } from "../api/sendMessage";
 
 const messages: MessageType[] = [
   {
@@ -33,49 +27,38 @@ const messages: MessageType[] = [
       "To provide you better answers, could you expain the accident in more detail to me?",
     type: "incoming",
   },
-
-  {
-    type: "recommendation",
-    recommendation: [
-      {
-        name: "Zurich Taxi Service",
-        src: "https://www.thoughtco.com/thmb/3TrAQ-Si8C-32jRl6GpN7vh60tw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-556712867-58e85b223df78c51620400d4.jpg",
-        contact: "+49 13322423",
-      },
-      {
-        name: "Zurich Taxi Service",
-        src: "https://www.thoughtco.com/thmb/3TrAQ-Si8C-32jRl6GpN7vh60tw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-556712867-58e85b223df78c51620400d4.jpg",
-        contact: "+49 13322423",
-      },
-      {
-        name: "Zurich Taxi Service",
-        src: "https://www.thoughtco.com/thmb/3TrAQ-Si8C-32jRl6GpN7vh60tw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-556712867-58e85b223df78c51620400d4.jpg",
-        contact: "+49 13322423",
-      },
-    ],
-  },
 ];
 
 export const Chat = () => {
   const [showCamera, setShowCamera] = useState(true);
   const [displayClaim, setDisplayClaim] = useState(false);
-  const [messageStream, setMessageStream] = useState(messages);
+  const [messageStream, setMessageStream] = useState<MessageType[]>(messages);
   const [query, setQuery] = useState("");
-
+  const [deviceInfo, setDeviceInfo] = useState<UploadResponse | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const ref_claim = useRef<HTMLDivElement>(null);
 
   const [imageUrl, setImageUrl] = useState("");
-  const { data, isLoading } = useQuery({
-    queryKey: "entries",
-    queryFn: getEntries,
-    onSuccess: () => _scroll(),
+  const { data, isLoading, mutateAsync } = useMutation({
+    mutationFn: ({
+      message,
+      deviceInfo,
+    }: {
+      message: string;
+      deviceInfo: UploadResponse;
+    }) => sendMessage(message, deviceInfo),
+    mutationKey: "sendMessage",
+    onSuccess: (res) => {
+      res && setMessageStream((old) => [...old, res]);
+      _scroll();
+    },
   });
 
-  const onUploadDone = (d: any, image: string) => {
+  const onUploadDone = (d: UploadResponse, image: string) => {
     setShowCamera(false);
     setImageUrl(image);
-    console.log(data);
+    setDeviceInfo(d);
+    console.log(deviceInfo);
   };
 
   const _scroll = () => {
@@ -84,17 +67,17 @@ export const Chat = () => {
       block: "end",
     });
   };
-  const sendMessage = (query: string) => {
-    //TODO:Send message
-
+  const _sendMessage = async (query: string) => {
     setMessageStream((m) => [...m, { message: query, type: "outgoing" }]);
     setQuery("");
     _scroll();
+    deviceInfo &&
+      (await mutateAsync({ message: query, deviceInfo: deviceInfo }));
   };
 
   const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key == "Enter") {
-      sendMessage(query);
+      _sendMessage(query);
     }
   };
 
@@ -131,7 +114,10 @@ export const Chat = () => {
           </div>
         </div>
         <div className="p-4 bg-slate-50 sticky top-0">
-          <InfoBox description="aa" damageDetails="aa" model="Honda" />
+          <InfoBox
+            damageDetails={deviceInfo}
+            model={deviceInfo?.vehicleDescription ?? ""}
+          />
         </div>
         <div ref={ref} className="flex flex-col gap-2 py-2 px-4">
           {messageStream.map((m, index) => {
@@ -185,12 +171,10 @@ export const Chat = () => {
 };
 
 const InfoBox = ({
-  description,
   damageDetails,
   model,
 }: {
-  description: string;
-  damageDetails: string;
+  damageDetails: UploadResponse | null;
   model: string;
 }) => {
   return (
@@ -200,15 +184,27 @@ const InfoBox = ({
         <span className="text-xs text-black-400">edit</span>
       </div>
       <div className="text-white">
-        <div>
-          Image Description: <span>{description}</span>
-        </div>
-        <div>
-          Damage Details: <span>{damageDetails}</span>
-        </div>
-        <div>
-          Car Model: <span>{model}</span>
-        </div>
+        {damageDetails ? (
+          <>
+            {damageDetails.fireDamage && <div>Fire Damange,</div>}
+            {damageDetails.glassDamage && <div>Glass Damange</div>}
+            {damageDetails.panelDamage && <div>Panel Damange</div>}
+
+            {!damageDetails.fireDamage &&
+              damageDetails.glassDamage &&
+              !damageDetails.panelDamage && (
+                <div>
+                  We could not find any damange details based on the attached
+                  picture.
+                </div>
+              )}
+          </>
+        ) : null}
+        {!!model && (
+          <div>
+            Car Model: <span>{model}</span>
+          </div>
+        )}
       </div>
       <div className="self-end font-semibold text-right">
         <div className=" flex items-center gap-1">

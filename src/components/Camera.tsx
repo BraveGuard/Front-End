@@ -5,6 +5,21 @@ import React, { ChangeEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 
+function base64ToImageFile(base64String: string) {
+  const base64Data = base64String.replace(/^data:[^;]+;base64,/, "");
+
+  const binaryData = atob(base64Data);
+  const arrayBuffer = new ArrayBuffer(binaryData.length);
+  const uint8Array = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < binaryData.length; i++) {
+    uint8Array[i] = binaryData.charCodeAt(i);
+  }
+
+  const blob = new Blob([uint8Array], { type: "application/octet-stream" });
+  const file = new File([blob], "image.png", { type: "image/png" });
+  return file;
+}
+
 const toBase64 = (file: File) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -16,7 +31,7 @@ const toBase64 = (file: File) =>
 export const Camera = ({
   onCapture,
 }: {
-  onCapture: (image: string) => void;
+  onCapture: (file: File | null, image: string) => void;
 }) => {
   const n = useNavigate();
   const webcamRef = React.useRef<Webcam>(null);
@@ -29,7 +44,8 @@ export const Camera = ({
     const res = webcamRef.current?.getScreenshot({ width: 1600, height: 1600 });
     res && setUrl(res);
     setTimeout(() => {
-      res && onCapture(res);
+      const file = res ? base64ToImageFile(res) : null;
+      res && onCapture(file, res);
     }, 1500);
   };
 
@@ -42,7 +58,7 @@ export const Camera = ({
 
     if (file) {
       const res: string = (await toBase64(file)) as string;
-      onCapture(res);
+      onCapture(file, res);
     }
   };
   const _onGoBack = () => {

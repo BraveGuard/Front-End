@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 export const Tabs = ({ onHomeClick }: { onHomeClick: () => void }) => {
   const { pathname } = useLocation();
 
-  if (pathname === "/chat" || pathname === "/") {
+  if (pathname === "/chat") {
     return null;
   }
   return (
