@@ -19,7 +19,7 @@ export const Home = () => {
           <ProfileCard></ProfileCard>
 
           <span className="text-md font-bold">Browse by Category</span>
-          <div className="overflow-y-scroll">
+          <div className=" no-scrollbar  overflow-y-scroll">
             <CategoryButtons
               active={policyState}
               onButtonClick={onButtonClick}

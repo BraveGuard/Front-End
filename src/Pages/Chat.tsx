@@ -79,12 +79,10 @@ export const Chat = () => {
   };
 
   const _scroll = () => {
-    setTimeout(() => {
-      ref.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }, 300);
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
   };
   const sendMessage = (query: string) => {
     //TODO:Send message
