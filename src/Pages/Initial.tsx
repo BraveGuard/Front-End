@@ -1,12 +1,9 @@
-import { motion } from "framer-motion";
-import { Camera } from "../components/Camera";
-export const Landing = ({ onGoNext }: { onGoNext: () => void }) => {
-  const onCapture = () => {};
+import { Link } from "react-router-dom";
+
+export const Landing = ({ onGoNext }: { onGoNext?: () => void }) => {
   return (
     <div className="h-full bg-red-200">
-      Landing Page
-      <Camera onCapture={onCapture}></Camera>
-      <button onClick={onGoNext}>Next</button>
+      <Link to="/home">Next</Link>
     </div>
   );
 };

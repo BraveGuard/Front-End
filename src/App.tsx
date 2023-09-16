@@ -1,56 +1,54 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  Link,
+  Route,
+  Router,
+  RouterProvider,
+  Routes,
+} from "react-router-dom";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { Chat } from "./Pages/Chat";
 import { Landing } from "./Pages/Initial";
 import { useState } from "react";
+import { Home } from "./Pages/Home";
+import { Tabs } from "./components/Tabs";
 const queryClient = new QueryClient();
 
-// //TODO: Check if we need routing
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <Landing />,
-//   },
-// ]);
+//TODO: Check if we need routing
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Landing />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
+  },
+]);
 
 function App() {
-  const [isInitial, setIsInitial] = useState(false);
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="text-black text-sm  h-screen w-[360px] flex flex-col px-2 py-2  mx-auto ">
-        <motion.div
-          className="h-full relative"
-          layout
-          transition={{ duration: 1, type: "spring" }}
-        >
-          <AnimatePresence>
-            {isInitial ? (
-              <motion.div
-                key="landing"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="h-full"
-              >
-                <Landing onGoNext={() => setIsInitial(false)} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="chat"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="h-full"
-              >
-                <Chat />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+      <div className="text-black text-sm h-screen bg-blue-200  w-[360px]  mx-auto ">
+        <div className="h-full flex flex-col bg-blue-50">
+          <BrowserRouter>
+            <motion.div
+              className="flex-1 overflow-y-scroll"
+              layout
+              transition={{ duration: 1, type: "spring" }}
+            >
+              <Routes>
+                <Route path="/" Component={Landing}></Route>
+                <Route path="/home" Component={Home}></Route>
+                <Route path="/chat" Component={Chat}></Route>
+              </Routes>
+            </motion.div>
+            <Tabs />
+          </BrowserRouter>
+        </div>
       </div>
     </QueryClientProvider>
   );
