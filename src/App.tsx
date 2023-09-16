@@ -32,11 +32,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="text-black text-sm h-screen bg-blue-200  w-[360px]  mx-auto ">
-        <div className="h-full flex flex-col bg-blue-50">
+      <div className="text-black text-sm  h-screen bg-white  md:w-[360px]  mx-auto ">
+        <div className="h-full flex flex-col bg-whites ">
           <BrowserRouter>
             <motion.div
-              className="flex-1 overflow-y-scroll"
+              className="flex-1 overflow-y-scroll px-4 py-2"
               layout
               transition={{ duration: 1, type: "spring" }}
             >
