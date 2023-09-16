@@ -15,7 +15,7 @@ export const Home = () => {
   return (
     <div className="flex  flex-col h-full ">
       <div className="flex-1 overflow-hidden">
-        <div className="flex  py-2  flex-col gap-6 bg-white">
+        <div className="flex  py-2  px-4 flex-col gap-6 bg-white">
           <ProfileCard></ProfileCard>
 
           <span className="text-md font-bold">Browse by Category</span>

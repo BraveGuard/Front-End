@@ -64,7 +64,7 @@ export const Chat = () => {
 
   return (
     <div className="relative h-full flex flex-col bg-slate-50 text-gray-800">
-      <div className="flex-1 overflow-x-scroll flex flex-col gap-2 py-2 px-2">
+      <div className="flex-1 overflow-x-scroll flex flex-col gap-2 py-2 px-4">
         {messageStream.map((m, index) => {
           const isIncoming = m.type == "incoming" || m.type == "recommendation";
           return (
