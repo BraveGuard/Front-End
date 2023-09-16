@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { AnimalIcon, CarIcon, HomeIcon, PlaneIcon, TvIcon } from "./Icons";
-
+import { motion } from "framer-motion";
 //   vehicle: "bg-[#00A2FF6E]",
 //   travel: "bg-[#9BE0DC]",
 
@@ -38,16 +38,23 @@ export const CategoryButtons = ({
   active: string;
 }) => {
   return (
-    <div className="flex gap-3 px-2 hidde">
-      {buttons.map((b) => (
-        <button
-          onClick={() => onButtonClick(b.name)}
-          className="min-h-[56px] max-h-[56px]  min-w-[56px] max-w-[56px]"
-        >
-          <CategoryButton active={active == b.name} icon={b.icon} />
-        </button>
-      ))}
-    </div>
+    <motion.div layout className="flex gap-3 px-2 hidde">
+      {buttons
+        .filter(
+          (btn) =>
+            active == "" ||
+            active == "all" ||
+            (active != "all" && btn.name != "all")
+        )
+        .map((b) => (
+          <button
+            onClick={() => onButtonClick(b.name)}
+            className="min-h-[56px] max-h-[56px]  min-w-[56px] max-w-[56px]"
+          >
+            <CategoryButton active={active == b.name} icon={b.icon} />
+          </button>
+        ))}
+    </motion.div>
   );
 };
 

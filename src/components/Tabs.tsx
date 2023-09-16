@@ -1,25 +1,27 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-export const Tabs = () => {
+export const Tabs = ({ onHomeClick }: { onHomeClick: () => void }) => {
   const { pathname } = useLocation();
 
-  if (pathname === "/") {
+  if (pathname === "/chat" || pathname === "/") {
     return null;
   }
   return (
-    <div className="flex w-full py-2 pb-4 items-center justify-around bg-black rounded-t-md">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="22"
-        height="23"
-        viewBox="0 0 22 23"
-        fill="none"
-      >
-        <path
-          d="M7.90572 21.3799V17.9297C7.9057 17.0554 8.59032 16.345 9.43831 16.3395H12.552C13.4038 16.3395 14.0943 17.0515 14.0943 17.9297V17.9297V21.3699C14.0943 22.1282 14.6877 22.7445 15.4232 22.75H17.5475C18.5396 22.7526 19.492 22.3481 20.1944 21.6258C20.8969 20.9034 21.2917 19.9226 21.2917 18.8997V9.09908C21.2916 8.27281 20.9364 7.48905 20.3217 6.95894L13.1049 1.00855C11.8434 -0.0322372 10.0417 0.00138424 8.81752 1.08856L1.75594 6.95894C1.11215 7.47342 0.727358 8.25951 0.708344 9.09908V18.8897C0.708344 21.0217 2.38467 22.75 4.45253 22.75H6.52832C6.88245 22.7526 7.22295 22.6095 7.47427 22.3522C7.72559 22.095 7.86693 21.745 7.86692 21.3799H7.90572Z"
-          fill="white"
-        />
-      </svg>
+    <div className="flex w-full py-2 pb-4 items-center justify-around  bg-[#2D2C2C] rounded-t-md">
+      <button onClick={onHomeClick}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="23"
+          viewBox="0 0 22 23"
+          fill="none"
+        >
+          <path
+            d="M7.90572 21.3799V17.9297C7.9057 17.0554 8.59032 16.345 9.43831 16.3395H12.552C13.4038 16.3395 14.0943 17.0515 14.0943 17.9297V17.9297V21.3699C14.0943 22.1282 14.6877 22.7445 15.4232 22.75H17.5475C18.5396 22.7526 19.492 22.3481 20.1944 21.6258C20.8969 20.9034 21.2917 19.9226 21.2917 18.8997V9.09908C21.2916 8.27281 20.9364 7.48905 20.3217 6.95894L13.1049 1.00855C11.8434 -0.0322372 10.0417 0.00138424 8.81752 1.08856L1.75594 6.95894C1.11215 7.47342 0.727358 8.25951 0.708344 9.09908V18.8897C0.708344 21.0217 2.38467 22.75 4.45253 22.75H6.52832C6.88245 22.7526 7.22295 22.6095 7.47427 22.3522C7.72559 22.095 7.86693 21.745 7.86692 21.3799H7.90572Z"
+            fill="white"
+          />
+        </svg>
+      </button>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="23"
@@ -32,72 +34,73 @@ export const Tabs = () => {
           fill="#ABABAB"
         />
       </svg>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="44"
-        height="35"
-        viewBox="0 0 44 35"
-        fill="none"
-      >
-        <rect
-          x="0.264374"
-          y="0.0665283"
-          width="42.8652"
-          height="34.0513"
-          rx="10"
-          fill="#AFB2B9"
-        />
-        <rect
-          x="3.17049"
-          y="2.24002"
-          width="37.0529"
-          height="29.7043"
-          rx="10"
-          fill="#2D2C2C"
-        />
-        <rect
-          x="9.70924"
-          y="15.2809"
-          width="23.2489"
-          height="3.62248"
-          rx="1.81124"
-          fill="#4D94FF"
-        />
-        <rect
-          width="2.31363"
-          height="12.6374"
-          transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 27.7329 0)"
-          fill="#2D2C2C"
-        />
-        <rect
-          width="4.6904"
-          height="12.6374"
-          transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 28.1256 29.5678)"
-          fill="#2D2C2C"
-        />
-        <rect
-          width="4.6904"
-          height="3.91369"
-          transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 3.91333 14.6089)"
-          fill="#2D2C2C"
-        />
-        <rect
-          width="4.6904"
-          height="3.91369"
-          transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 43.4102 14.5565)"
-          fill="#2D2C2C"
-        />
-        <rect
-          x="20"
-          y="27"
-          width="19"
-          height="3"
-          rx="1.5"
-          transform="rotate(-90 20 27)"
-          fill="#4D94FF"
-        />
-      </svg>
-
+      <Link to="/chat">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="44"
+          height="35"
+          viewBox="0 0 44 35"
+          fill="none"
+        >
+          <rect
+            x="0.264374"
+            y="0.0665283"
+            width="42.8652"
+            height="34.0513"
+            rx="10"
+            fill="#AFB2B9"
+          />
+          <rect
+            x="3.17049"
+            y="2.24002"
+            width="37.0529"
+            height="29.7043"
+            rx="10"
+            fill="#2D2C2C"
+          />
+          <rect
+            x="9.70924"
+            y="15.2809"
+            width="23.2489"
+            height="3.62248"
+            rx="1.81124"
+            fill="#4D94FF"
+          />
+          <rect
+            width="2.31363"
+            height="12.6374"
+            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 27.7329 0)"
+            fill="#2D2C2C"
+          />
+          <rect
+            width="4.6904"
+            height="12.6374"
+            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 28.1256 29.5678)"
+            fill="#2D2C2C"
+          />
+          <rect
+            width="4.6904"
+            height="3.91369"
+            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 3.91333 14.6089)"
+            fill="#2D2C2C"
+          />
+          <rect
+            width="4.6904"
+            height="3.91369"
+            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 43.4102 14.5565)"
+            fill="#2D2C2C"
+          />
+          <rect
+            x="20"
+            y="27"
+            width="19"
+            height="3"
+            rx="1.5"
+            transform="rotate(-90 20 27)"
+            fill="#4D94FF"
+          />
+        </svg>
+      </Link>
       <svg
         width="22"
         height="22"

@@ -46,7 +46,6 @@ function App() {
                 <Route path="/chat" Component={Chat}></Route>
               </Routes>
             </motion.div>
-            <Tabs />
           </BrowserRouter>
         </div>
       </div>

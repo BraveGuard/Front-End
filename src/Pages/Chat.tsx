@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getEntries } from "../api/axios";
 
 import { Bubble } from "../components/Bubble";
@@ -12,6 +12,8 @@ import { faCamera, faFile } from "@fortawesome/free-solid-svg-icons";
 import { Recommendations } from "../components/Recommendation";
 import { MessageType } from "../types/Message";
 import { AnimatePresence } from "framer-motion";
+import { Loading } from "../components/Loading";
+import { Upload } from "./Upload";
 
 const messages: MessageType[] = [
   {
@@ -31,17 +33,17 @@ const messages: MessageType[] = [
 ];
 
 export const Chat = () => {
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const [messageStream, setMessageStream] = useState(messages);
   const [query, setQuery] = useState("");
-
   const { data, isLoading } = useQuery({
     queryKey: "entries",
     queryFn: getEntries,
   });
 
-  const onCapture = (image: string) => {
-    console.log(image);
+  const onUploadDone = (data: any) => {
+    setShowCamera(false);
+    console.log(data);
   };
 
   const sendMessage = (query: string) => {
@@ -55,6 +57,11 @@ export const Chat = () => {
       sendMessage(query);
     }
   };
+
+  if (showCamera) {
+    return <Upload onUploadDone={onUploadDone} />;
+  }
+
   return (
     <div className="relative h-full flex flex-col bg-slate-50 text-gray-800">
       <div className="flex-1 overflow-x-scroll flex flex-col gap-2 py-2 px-2">
@@ -87,7 +94,7 @@ export const Chat = () => {
           className="block w-full p-2 rounded-md"
           type="text"
         />
-        <input id="fileInput" type="file" className="hidden" />
+        {/* <input id="fileInput" type="file" className="hidden" />
         <label
           htmlFor="fileInput"
           className="cursor-pointer h-full flex items-center justify-center aspect-square rounded-md bg-white"
@@ -99,17 +106,8 @@ export const Chat = () => {
           onClick={() => setShowCamera(true)}
         >
           <FontAwesomeIcon icon={faCamera} />
-        </button>
+        </button> */}
       </div>
-      <AnimatePresence>
-        {showCamera && (
-          <div className="absolute top-0 w-full h-full bg-transparent">
-            <Modal onClose={() => setShowCamera(false)}>
-              <Camera onCapture={onCapture} />
-            </Modal>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
