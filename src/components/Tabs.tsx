@@ -7,7 +7,7 @@ export const Tabs = ({ onHomeClick }: { onHomeClick: () => void }) => {
     return null;
   }
   return (
-    <div className="h-[100px] flex w-full py-2 pb-4 items-center justify-around  bg-[#2D2C2C] rounded-t-md">
+    <div className="h-[80px] flex w-full py-2 pb-4 items-center justify-around  bg-[#2D2C2C] rounded-t-md">
       <button onClick={onHomeClick}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

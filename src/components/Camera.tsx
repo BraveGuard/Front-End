@@ -1,7 +1,17 @@
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import isMobile from "is-mobile";
-import React, { useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
+
+const toBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
 
 export const Camera = ({
   onCapture,
@@ -23,13 +33,22 @@ export const Camera = ({
   const flipFacing = () => {
     setFacing((f) => (f === "environment" ? undefined : "environment"));
   };
+
+  const onFilePick: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (file) {
+      const res: string = (await toBase64(file)) as string;
+      onCapture(res);
+    }
+  };
   const _onGoBack = () => {
     n("/home");
   };
 
   return (
-    <div className="flex h-full flex-col w-full items-center gap-4 bg-black">
-      <div className="flex-1">
+    <div className="flex h-full justify-center flex-col w-full items-center gap-4 bg-black">
+      <div className="flex-1 flex-col gap-6 flex items-center justify-center ">
         <Webcam
           videoConstraints={
             facing
@@ -41,7 +60,24 @@ export const Camera = ({
           ref={webcamRef}
           screenshotFormat="image/jpeg"
         />
+        <div className="">
+          <input
+            multiple={false}
+            onChange={(f) => onFilePick(f)}
+            accept="image/png, image/jpeg"
+            id="fileInput"
+            type="file"
+            className="hidden"
+          />
+          <label
+            htmlFor="fileInput"
+            className="p-2 cursor-pointer h-full flex items-center justify-center  rounded-md bg-white"
+          >
+            Upload a Picture
+          </label>
+        </div>
       </div>
+
       <div className="w-full">
         <Tabs
           onBackPress={_onGoBack}
@@ -63,7 +99,7 @@ const Tabs = ({
   onRetakePress: () => void;
 }) => {
   return (
-    <div className="h-[100px] flex w-full py-2  px-10 pb-4 items-center justify-between bg-[#2D2C2C] rounded-t-md">
+    <div className="h-[80px] flex w-full py-2  px-10 pb-4 items-center justify-between bg-[#2D2C2C] rounded-t-md">
       <button
         className=" w-8 h-8 bg-[#363E51] flex items-center justify-center rounded-md shadow-md"
         onClick={onBackPress}
@@ -82,74 +118,10 @@ const Tabs = ({
         </svg>
       </button>
       <button
-        className="bg-[#363E51] flex items-center justify-center rounded-md shadow-md"
+        className="bg-[#363E51] text-white flex items-center justify-center rounded-md shadow-md"
         onClick={onClickPress}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="44"
-          height="35"
-          viewBox="0 0 44 35"
-          fill="none"
-        >
-          <rect
-            x="0.264374"
-            y="0.0665283"
-            width="42.8652"
-            height="34.0513"
-            rx="10"
-            fill="#AFB2B9"
-          />
-          <rect
-            x="3.17049"
-            y="2.24002"
-            width="37.0529"
-            height="29.7043"
-            rx="10"
-            fill="#2D2C2C"
-          />
-          <rect
-            x="9.70924"
-            y="15.2809"
-            width="23.2489"
-            height="3.62248"
-            rx="1.81124"
-            fill="#4D94FF"
-          />
-          <rect
-            width="2.31363"
-            height="12.6374"
-            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 27.7329 0)"
-            fill="#2D2C2C"
-          />
-          <rect
-            width="4.6904"
-            height="12.6374"
-            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 28.1256 29.5678)"
-            fill="#2D2C2C"
-          />
-          <rect
-            width="4.6904"
-            height="3.91369"
-            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 3.91333 14.6089)"
-            fill="#2D2C2C"
-          />
-          <rect
-            width="4.6904"
-            height="3.91369"
-            transform="matrix(0.0135278 0.999908 -0.99991 0.0134523 43.4102 14.5565)"
-            fill="#2D2C2C"
-          />
-          <rect
-            x="20"
-            y="27"
-            width="19"
-            height="3"
-            rx="1.5"
-            transform="rotate(-90 20 27)"
-            fill="#4D94FF"
-          />
-        </svg>
+        <FontAwesomeIcon size={"2xl"} icon={faCamera} />
       </button>
 
       <button

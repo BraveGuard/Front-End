@@ -4,28 +4,36 @@ import { Camera } from "../components/Camera";
 import { Loading } from "../components/Loading";
 import { getEntries } from "../api/axios";
 import isMobile from "is-mobile";
+import { useState } from "react";
 
 export const Upload = ({
   onUploadDone,
 }: {
   onUploadDone: (data: any, image: string) => void;
 }) => {
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (d) => {
+  const { data, mutateAsync, isLoading } = useMutation({
+    mutationFn: (image: string) => {
       function wait(milliseconds: number) {
         return new Promise((resolve) => setTimeout(resolve, milliseconds));
       }
-      return wait(5000);
+
+      return wait(1000);
     },
     mutationKey: "upload-image",
   });
 
+  const [imageUrl, setImage] = useState("");
   const _onCapture = async (image: string) => {
-    await mutateAsync();
+    await mutateAsync(image);
     onUploadDone(null, image);
   };
   if (isLoading) {
-    return <Loading></Loading>;
+    return (
+      <div>
+        <img src={imageUrl} />
+        <Loading></Loading>
+      </div>
+    );
   }
 
   return (

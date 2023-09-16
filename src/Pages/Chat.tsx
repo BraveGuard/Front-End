@@ -36,13 +36,15 @@ export const Chat = () => {
   const [showCamera, setShowCamera] = useState(true);
   const [messageStream, setMessageStream] = useState(messages);
   const [query, setQuery] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const { data, isLoading } = useQuery({
     queryKey: "entries",
     queryFn: getEntries,
   });
 
-  const onUploadDone = (data: any) => {
+  const onUploadDone = (d: any, image: string) => {
     setShowCamera(false);
+    setImageUrl(image);
     console.log(data);
   };
 
@@ -64,6 +66,7 @@ export const Chat = () => {
 
   return (
     <div className="relative h-full flex flex-col bg-slate-50 text-gray-800">
+      <div>{imageUrl ? <img src={imageUrl} /> : null}</div>
       <div className="flex-1 overflow-x-scroll flex flex-col gap-2 py-2 px-4">
         {messageStream.map((m, index) => {
           const isIncoming = m.type == "incoming" || m.type == "recommendation";
