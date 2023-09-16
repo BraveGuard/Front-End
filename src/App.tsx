@@ -36,7 +36,7 @@ function App() {
         <div className="h-full flex flex-col bg-whites ">
           <BrowserRouter>
             <motion.div
-              className="flex-1 overflow-y-scroll  py-2"
+              className="flex-1 overflow-y-scroll  "
               layout
               transition={{ duration: 1, type: "spring" }}
             >
