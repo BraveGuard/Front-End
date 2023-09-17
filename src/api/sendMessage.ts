@@ -31,7 +31,14 @@ export const sendMessage = async (
 ): Promise<MessageType> => {
   const coverageCheck = message.toLowerCase().includes("am i covered");
   const recommend = message.toLowerCase().includes("recommend");
+  const information = message.toLowerCase().includes("information");
 
+  if (information) {
+    return {
+      type: "incoming",
+      message: "At the accident scene, gather contact information for all parties involved, their insurance details, and vehicle specifics. Note the accident location, date, and time, along with weather and road conditions. Collect witness statements and contact information, document the scene with photos and videos, and request a police report if applicable. Describe the accident's details and any injuries."
+    }
+  }
   if (recommend) {
     try {
       const res = await getLocalSuggestions();
