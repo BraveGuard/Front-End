@@ -36,7 +36,7 @@ const Recommendation = ({
     <div className="w-full border rounded-xl p-3 flex flex-col gap-1">
       <img
         className="w-full aspect-square object-cover border rounded-xl"
-        src={type == "car_rentals" ? CAR_RENTALS : TAXI_URL}
+        src={type == "taxi" ? TAXI_URL : (type == "workshop" ? WORKSHOPS : (RECOVERY))}
       />
       <div className="flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -62,5 +62,8 @@ const Recommendation = ({
 const TAXI_URL =
   "https://www.thoughtco.com/thmb/3TrAQ-Si8C-32jRl6GpN7vh60tw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-556712867-58e85b223df78c51620400d4.jpg";
 
-const CAR_RENTALS =
-  "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FyJTIwcmVudGFsfGVufDB8fDB8fHww&w=1000&q=80";
+const RECOVERY =
+  "https://blog.fatberry.com/wp-content/uploads/2022/09/Feature-vehicle-towing-cost-980x653.jpg";
+
+const WORKSHOPS = 
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGXd2CvdOuvyx4F-yAcqwX-mvk7aaIc-EJOQ&usqp=CAU";

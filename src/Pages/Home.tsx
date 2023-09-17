@@ -19,7 +19,7 @@ export const Home = () => {
           <ProfileCard></ProfileCard>
 
           <span className="text-md font-bold">Browse by Category</span>
-          <div className=" no-scrollbar  overflow-y-scroll">
+          <div className=" no-scrollbar  overflow-y-auto">
             <CategoryButtons
               active={policyState}
               onButtonClick={onButtonClick}
@@ -28,14 +28,14 @@ export const Home = () => {
           {!policyState ? (
             <>
               <Conversation
-                title="Last Audi what not"
+                title="Colour Damage Of Audi Q5"
                 type="vehicle"
-                date={new Date()}
+                date="20 Days Ago"
               ></Conversation>
               <Conversation
-                title="last travel to mallorca"
+                title="Baggage Damage Abroad"
                 type="travel"
-                date={new Date()}
+                date="30 Days Ago"
               ></Conversation>
 
               <span className="text-md font-bold">Travel Articles</span>

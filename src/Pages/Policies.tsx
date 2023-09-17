@@ -2,19 +2,24 @@ import { RingCheck } from "../components/Ring";
 
 const policies = [
   {
-    title: "This is a cool one policy long dasa daskjdbsajhdbsa",
+    title: "Motor Vehicle Insurance",
     expired: false,
-    number: "CP1",
+    number: "MP.500.002",
   },
   {
-    title: " This is another one aiaada",
+    title: "Commercial Motor Vehicle Insurance",
     expired: true,
-    number: "CP2",
+    number: "CP.980.001",
   },
   {
-    title: "dafhsakja dsadhksja ",
+    title: "Rental Motor Vehicle Insurance",
     expired: true,
-    number: "CP3",
+    number: "TD.343.001",
+  },
+  {
+    title: "Underinsured Motor Vehicle Coverage",
+    expired: true,
+    number: "TU.211.001",
   },
 ];
 
@@ -60,7 +65,7 @@ const Policy = ({
       </div>
       <div className="flex flex-col gap-1">
         <div className="flex justify-between items-center">
-          <span className="text-lg">{title}</span>
+          <span className="text-lg" style={{width: '70%'}}>{title}</span>
           {!expired && (
             <div className=" text-xs flex items-center gap-2">
               <span>Active</span>

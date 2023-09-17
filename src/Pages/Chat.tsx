@@ -19,12 +19,12 @@ import { sendMessage } from "../api/sendMessage";
 
 const messages: MessageType[] = [
   {
-    message: "Here is the details about the item you scanned.",
+    message: "Here are the details about the vehicle you scanned.",
     type: "incoming",
   },
   {
     message:
-      "To provide you better answers, could you expain the accident in more detail to me?",
+      "Is there anything that you like to ask at this stage?",
     type: "incoming",
   },
 ];
@@ -186,15 +186,15 @@ const InfoBox = ({
       <div className="text-white">
         {damageDetails ? (
           <>
-            {damageDetails.fireDamage && <div>Fire Damange,</div>}
-            {damageDetails.glassDamage && <div>Glass Damange</div>}
-            {damageDetails.panelDamage && <div>Panel Damange</div>}
+            {damageDetails.fireDamage && <div>Fire Damage{' '}</div>}
+            {damageDetails.glassDamage && <div>Glass Damage{' '}</div>}
+            {damageDetails.panelDamage && <div>Panel Damage{' '}</div>}
 
             {!damageDetails.fireDamage &&
               damageDetails.glassDamage &&
               !damageDetails.panelDamage && (
                 <div>
-                  We could not find any damange details based on the attached
+                  We could not find any damage details based on the attached
                   picture.
                 </div>
               )}

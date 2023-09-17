@@ -5,7 +5,7 @@ import { RingCheck } from "./Ring";
 
 type ConversationProps = {
   type: "vehicle" | "travel";
-  date: Date;
+  date: string;
   title: string;
 };
 
@@ -28,7 +28,7 @@ export const Conversation = ({ date, type, title }: ConversationProps) => {
             <span>{title}</span>
             <div className="flex gap-1 items-center opacity-[60%]">
               <FontAwesomeIcon icon={faClock} />
-              {date.toISOString()}
+              {date}
             </div>
           </div>
         </div>

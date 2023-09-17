@@ -6,7 +6,7 @@ const ZurichAddr = {
 };
 
 export type LocalSuggestionResponse = {
-  type: "car_rentals" | "taxi";
+  type: "taxi" | "workshop" | "recovery";
   name: string;
   location: { lat: number; lng: number };
 };

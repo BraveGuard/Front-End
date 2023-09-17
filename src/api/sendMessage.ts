@@ -49,12 +49,11 @@ export const sendMessage = async (
       const coverage = [
         res.fireDamage && "fire damage",
         res.glassDamage && "glass damage",
-        res.panelDamage && "panel damange",
+        res.panelDamage && "panel damage",
       ]
-        .filter((t) => t)
-        .join(",");
+        .filter((t) => t);
       const response =
-        "Your insurance cover " + (coverage ? "s" + coverage : "is uncertain.");
+        "Your insurance cover" + (coverage.length > 0 ? "s" + coverage.join(', ') : " is uncertain.");
       return {
         message: response,
         type: "incoming",
@@ -63,7 +62,7 @@ export const sendMessage = async (
   }
   return {
     message:
-      "Sorry, we cannot process your data at the moment. Please try again later.",
+      "Sorry, I don't have an answer for that. Please ask a different question.",
     type: "incoming",
   } as const;
 };
